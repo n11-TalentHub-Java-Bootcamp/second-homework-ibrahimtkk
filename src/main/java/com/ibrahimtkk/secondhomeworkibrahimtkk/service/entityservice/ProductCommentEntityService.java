@@ -1,8 +1,12 @@
 package com.ibrahimtkk.secondhomeworkibrahimtkk.service.entityservice;
 
+import com.ibrahimtkk.secondhomeworkibrahimtkk.converter.ProductCommentConverter;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.converter.UserConverter;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.dao.ProductCommentDao;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.dao.UserDao;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.dto.ProductCommentDto;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.dto.UserDto;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.entity.ProductComment;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.entity.User;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.exception.UserAndPhoneDoesNotMatchException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,33 +17,31 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CommentEntityService {
+public class ProductCommentEntityService {
 
     @Autowired
-    private UserDao userDao;
+    private ProductCommentDao productCommentDao;
 
-    public List<User> findAll() {
-        return (List<User>) userDao.findAll();
+    public List<ProductComment> findAll() {
+        return (List<ProductComment>) productCommentDao.findAll();
     }
 
-    public User findByUsername(String username) {
-        return userDao.findByUsername(username);
+    public List<ProductComment> findByUserId(String userId) {
+        return productCommentDao.findByUserId(Long.valueOf(userId));
     }
 
-    public User findByPhone(String phone) {
-        return userDao.findByPhone(phone);
+    public List<ProductComment> findByProductId(String productId) {
+        return productCommentDao.findByProductId(Long.valueOf(productId));
     }
 
-    public UserDto save(UserDto userDto) {
-        final User user = userDao.save(UserConverter.INSTANCE.convertUserDtoToUser(userDto));
+    public ProductCommentDto save(ProductCommentDto productCommentDto) {
+        final ProductComment productComment = productCommentDao.save(ProductCommentConverter.INSTANCE.convertProductCommentDtoToProductComment(productCommentDto));
 
-        return UserConverter.INSTANCE.convertUserToUserDto(user);
+        return ProductCommentConverter.INSTANCE.convertProductCommentToProductCommentDto(productComment);
     }
 
-
-    public void deleteByUsernameAndPhone(String username, String phone) {
-        if (userDao.deleteByUsernameAndPhone(username, phone) == 0)
-            throw new UserAndPhoneDoesNotMatchException(username + " username and "+phone+" phone does not match.");
+    public void deleteById(Long id) {
+        productCommentDao.deleteById(id);
     }
 
 }

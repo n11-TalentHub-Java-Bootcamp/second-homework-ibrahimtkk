@@ -5,13 +5,15 @@ import com.ibrahimtkk.secondhomeworkibrahimtkk.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface CommentDao extends CrudRepository<ProductComment, Long> {
+public interface ProductCommentDao extends CrudRepository<ProductComment, Long> {
 
-    User findByUsername(String username);
+    List<ProductComment> findByUserId(Long userId);
 
-    User findByPhone(String phone);
+    List<ProductComment> findByProductId(Long productId);
 
-    Long deleteByUsernameAndPhone(String username, String phone);
+    List<ProductComment> findAll();
 
 }

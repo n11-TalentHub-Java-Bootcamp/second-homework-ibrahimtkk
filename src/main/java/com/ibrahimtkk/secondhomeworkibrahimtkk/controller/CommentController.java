@@ -1,9 +1,15 @@
 package com.ibrahimtkk.secondhomeworkibrahimtkk.controller;
 
+import com.ibrahimtkk.secondhomeworkibrahimtkk.converter.ProductCommentConverter;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.converter.UserConverter;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.dto.ProductCommentDto;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.dto.UserDto;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.entity.ProductComment;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.entity.User;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.exception.CommentByProductIdNotFoundException;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.exception.CommentByUserIdNotFoundException;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.exception.UserNotFoundException;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.service.entityservice.ProductCommentEntityService;
 import com.ibrahimtkk.secondhomeworkibrahimtkk.service.entityservice.UserEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,54 +18,48 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/users/")
-public class UserController {
+@RequestMapping("/api/comments/")
+public class CommentController {
 
     @Autowired
-    private UserEntityService userEntityService;
+    private ProductCommentEntityService productCommentEntityService;
 
     @GetMapping("")
-    public List<UserDto> findAllUsers() {
+    public List<ProductCommentDto> findAllComments() {
 
-        List<User> users = userEntityService.findAll();
+        List<ProductComment> productComments = productCommentEntityService.findAll();
 
-        return users.stream()
-                .map(UserConverter.INSTANCE::convertUserToUserDto)
+        return productComments.stream()
+                .map(ProductCommentConverter.INSTANCE::convertProductCommentToProductCommentDto)
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/user/{username}")
-    public User findByUsername(@PathVariable String username) {
-        User user = userEntityService.findByUsername(username);
-        if (user == null)
-            throw new UserNotFoundException("User not found by username. username: " + username);
-        return user;
+    @GetMapping("/user/{userId}")
+    public List<ProductComment> findByUsername(@PathVariable String userId) {
+        List<ProductComment> productComments = productCommentEntityService.findByUserId(userId);
+        if (productComments.size() == 0)
+            throw new CommentByUserIdNotFoundException(userId);
+        return productComments;
     }
 
-    @GetMapping("/phone/{phone}")
-    public User findByPhone(@PathVariable String phone) {
-        User user = userEntityService.findByPhone(phone);
-        if (user == null)
-            throw new UserNotFoundException("User not found by phone. username: " + phone);
-        return user;
+    @GetMapping("/product/{productId}")
+    public List<ProductComment> findByPhone(@PathVariable String productId) {
+        List<ProductComment> productComments = productCommentEntityService.findByProductId(productId);
+        if (productComments.size() == 0)
+            throw new CommentByProductIdNotFoundException(productId);
+        return productComments;
     }
 
     @PostMapping("")
-    public UserDto save(@RequestBody UserDto userDto) { //TODO: Input değeri dto tipinde olmalı
+    public ProductCommentDto save(@RequestBody ProductCommentDto productCommentDto) { //TODO: Input değeri dto tipinde olmalı
 
-        userDto = userEntityService.save(userDto);
-        return userDto;
+        productCommentDto = productCommentEntityService.save(productCommentDto);
+        return productCommentDto;
     }
 
-    @DeleteMapping("{username}/{phone}")
-    public void deleteUser(@PathVariable String username, @PathVariable String phone) {
-        userEntityService.deleteByUsernameAndPhone(username, phone);
+    @DeleteMapping("{commentId}")
+    public void deleteUser(@PathVariable String commentId) {
+        productCommentEntityService.deleteById(Long.valueOf(commentId));
     }
-
-    @PutMapping("")
-    public UserDto update(@RequestBody UserDto userDto) {//TODO: Input değeri dto tipinde olmalı
-        return userEntityService.save(userDto);
-    }
-
 
 }

@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class CommentByUserIdNotFoundException extends RuntimeException {
+public class CommentByProductIdNotFoundException extends RuntimeException {
 
-    public CommentByUserIdNotFoundException(String userId) {
-        super("User not found by username. username: " + userId);
+    public CommentByProductIdNotFoundException(String productId) {
+        super("There are no comments for "+ productId +" product yet. ");
     }
 }

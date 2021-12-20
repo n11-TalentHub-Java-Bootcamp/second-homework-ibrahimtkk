@@ -1,18 +1,19 @@
 package com.ibrahimtkk.secondhomeworkibrahimtkk.converter;
 
 
-import com.ibrahimtkk.secondhomeworkibrahimtkk.dto.UserDto;
-import com.ibrahimtkk.secondhomeworkibrahimtkk.entity.User;
-import org.mapstruct.*;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.dto.ProductCommentDto;
+import com.ibrahimtkk.secondhomeworkibrahimtkk.entity.ProductComment;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 //@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 @Mapper( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
-public interface UserConverter {
+public interface ProductCommentConverter {
 
-    UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
+    ProductCommentConverter INSTANCE = Mappers.getMapper(ProductCommentConverter.class);
 
-    User convertUserDtoToUser(UserDto userDto);
+    ProductComment convertProductCommentDtoToProductComment(ProductCommentDto productCommentDto);
 
-    UserDto convertUserToUserDto(User user);
+    ProductCommentDto convertProductCommentToProductCommentDto(ProductComment productComment);
 }
