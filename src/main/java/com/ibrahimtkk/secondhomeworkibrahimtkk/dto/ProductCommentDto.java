@@ -1,13 +1,13 @@
-package dto;
+package com.ibrahimtkk.secondhomeworkibrahimtkk.dto;
 
-import entity.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Builder
+@NoArgsConstructor
 @Data
 public class ProductCommentDto {
 

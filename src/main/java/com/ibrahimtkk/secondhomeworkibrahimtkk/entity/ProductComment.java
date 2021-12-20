@@ -1,4 +1,4 @@
-package entity;
+package com.ibrahimtkk.secondhomeworkibrahimtkk.entity;
 
 import lombok.Data;
 
